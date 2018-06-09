@@ -1,3 +1,4 @@
 {
-    "jwtPrivateKey": "fixel_jwtPrivateKey"
+    "jwtPrivateKey": "fixel_jwtPrivateKey",
+    "db": "fixel_db"
 }
