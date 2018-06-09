@@ -924,7 +924,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<admin-panel *ngIf=\"isAdmin()\" (movieAdded)=\"movieAdded($event)\"></admin-panel>\n<div class=\"list-group\" *ngIf=\"movieList\">\n  <div class=\"media\" *ngFor=\"let movie of movieList; odd as o; trackBy: identify\" [class.odd]=\"o\">\n    <img [src]=\"posterUrl+movie.poster_path\" class=\"mr-3 img-responsive img-thumbnail\" [alt]=\"movie.title\">\n    <div class=\"media-body\">\n      <h5 class=\"mt-0\">\n        <a [routerLink]=\"['/movies', movie.tmdbId]\">{{movie.title}}</a>\n      </h5>\n      {{movie.overview | summary: 150}}\n      <div style=\"margin-top: 10%\" class=\"card-footer\">\n        <button (click)=purchaseTicket(movie) class=\"btn btn-primary\">Purchase Ticket</button>\n        <button *ngIf=\"isAdmin()\" (click)=deleteMovie(movie._id) class=\"btn btn-outline-danger\">Delete</button>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<admin-panel *ngIf=\"isAdmin()\" (movieAdded)=\"movieAdded($event)\"></admin-panel>\n<div class=\"list-group\" *ngIf=\"movieList\">\n  <div class=\"media\" *ngFor=\"let movie of movieList; odd as o; trackBy: identify\" [class.odd]=\"o\">\n    <img [src]=\"posterUrl+movie.poster_path\" class=\"mr-3 img-responsive img-thumbnail\" [alt]=\"movie.title\">\n    <div class=\"media-body\">\n      <h5 class=\"mt-0\">\n        <a [routerLink]=\"['/movies', movie.tmdbId]\">{{movie.title}}</a>\n      </h5>\n      <p>\n        {{movie.overview | summary: 150}}\n      </p>\n      <div style=\"margin-top: 10%\" class=\"card-footer\">\n        <button (click)=purchaseTicket(movie) class=\"btn btn-primary\">Purchase Ticket</button>\n        <button *ngIf=\"isAdmin()\" (click)=deleteMovie(movie._id) class=\"btn btn-outline-danger\">Delete</button>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -1537,7 +1537,8 @@ var SignupComponent = /** @class */ (function () {
             if (result)
                 _this.router.navigate(['/movies']);
         }, function (error) {
-            _this.errorDetails = error.error;
+            if (error.status == 400)
+                _this.errorDetails = error.error;
         });
     };
     SignupComponent.prototype.ngOnInit = function () {
