@@ -916,7 +916,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<admin-panel *ngIf=\"isAdmin()\" (movieAdded)=\"movieAdded($event)\"></admin-panel>\n<div class=\"list-group\" *ngIf=\"movieList\">\n  <div class=\"media\" *ngFor=\"let movie of movieList; odd as o; trackBy: identify\" [class.odd]=\"o\">\n    <img [src]=\"posterUrl+movie.poster_path\" class=\"mr-3 img-responsive img-thumbnail\" [alt]=\"movie.title\">\n    <div class=\"media-body\">\n      <h5 class=\"mt-0\">\n        <a [routerLink]=\"['/movies', movie.tmdbId]\">{{movie.title}}</a>\n      </h5>\n      {{movie.overview | summary: 150}}\n    </div>\n    <button (click)=purchaseTicket(movie) class=\"btn btn-primary\">Purchase Ticket</button>\n    <button *ngIf=\"isAdmin()\" (click)=deleteMovie(movie._id) class=\"btn btn-outline-danger\">Delete</button>\n  </div>\n</div>"
+module.exports = "<admin-panel *ngIf=\"isAdmin()\" (movieAdded)=\"movieAdded($event)\"></admin-panel>\n<div class=\"list-group\" *ngIf=\"movieList\">\n  <div class=\"media\" *ngFor=\"let movie of movieList; odd as o; trackBy: identify\" [class.odd]=\"o\">\n    <img [src]=\"posterUrl+movie.poster_path\" class=\"mr-3 img-responsive img-thumbnail\" [alt]=\"movie.title\">\n    <div class=\"media-body\">\n      <h5 class=\"mt-0\">\n        <a [routerLink]=\"['/movies', movie.tmdbId]\">{{movie.title}}</a>\n      </h5>\n      {{movie.overview | summary: 150}}\n      <div style=\"margin-top: 10%\" class=\"card-footer\">\n        <button (click)=purchaseTicket(movie) class=\"btn btn-primary\">Purchase Ticket</button>\n        <button *ngIf=\"isAdmin()\" (click)=deleteMovie(movie._id) class=\"btn btn-outline-danger\">Delete</button>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -1215,7 +1215,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var AuthService = /** @class */ (function () {
     function AuthService(http) {
         this.http = http;
-        this.url = "/api/auth";
+        this.url = "http://localhost:3000/api/auth";
         this.jwtHelper = new _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_3__["JwtHelperService"]();
     }
     AuthService.prototype.appendAuthHeader = function () {
@@ -1327,7 +1327,7 @@ var MoviesService = /** @class */ (function () {
     function MoviesService(http, authService) {
         this.http = http;
         this.authService = authService;
-        this.url = '/api/movies';
+        this.url = 'http://localhost:3000/api/movies';
     }
     MoviesService.prototype.getMovies = function () {
         var authHeader = this.authService.appendAuthHeader();
@@ -1486,7 +1486,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<a routerLink=\"/\">&#8592;To Login Page</a>\n<form #f=\"ngForm\" (ngSubmit)=\"signup(f.value)\">\n  <div *ngIf=\"invalidLogin\" class=\"alert alert-danger\">\n    Invalid email and/or password.\n  </div>\n  <div class=\"container col-md-6 form-group\">\n    <div class=\"row\">\n      <div class=\"col\">\n        <label for=\"username\">Username</label>\n        <br>\n        <input placeholder=\"*Username\" id=\"username\" #username=\"ngModel\" ngModel name=\"username\" required maxlength=\"40\" minlength=\"4\"\n          class=\"form-control\">\n        <div class=\"alert alert-danger\" *ngIf=\"username.touched && username.invalid\">\n          <div *ngIf=\"username.errors.required\">\n            This field is required.\n          </div>\n          <div *ngIf=\"username.errors.minlength\">\n            Username must be atleast 3 characters.\n          </div>\n          <div *ngIf=\"username.errors.maxlength\">\n            Username cannot exceed 40 characters.\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col\">\n        <label for=\"email\">Email</label>\n        <br>\n        <input placeholder=\"*Email\" id=\"email\" #email=\"ngModel\" ngModel name=\"email\" required minlength=\"5\" maxlength=\"35\" class=\"form-control\">\n        <div class=\"alert alert-danger\" *ngIf=\"email.touched && email.invalid\">\n          <div *ngIf=\"email.errors.required\">\n            This field is required.\n          </div>\n          <div *ngIf=\"email.errors.minlength\">\n            Email must be atleast 5 characters.\n          </div>\n          <div *ngIf=\"email.errors.maxlength\">\n            Email cannot exceed 35 characters.\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col\">\n        <label for=\"password\">Password </label>\n        <br>\n        <input type=\"password\" id=\"password\" placeholder=\"*Password\" ngModel name=\"password\" #password=\"ngModel\" required minlength=\"5\"\n          maxlength=\"20\" class=\"form-control\">\n        <div class=\"alert alert-danger\" *ngIf=\"password.touched && password.invalid\">\n          <div *ngIf=\"password.errors.required\">\n            This field is required.\n          </div>\n          <div *ngIf=\"password.errors.minlength\">\n            Password must be atleast 5 characters.\n          </div>\n          <div *ngIf=\"password.errors.maxlength\">\n            Password cannot exceed 20 characters.\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"form-check\">\n        <input class=\"form-check-input\" type=\"checkbox\" ngModel name=\"isAdmin\" #isAdmin=\"ngModel\" id=\"gridCheck\">\n        <label class=\"form-check-label\" for=\"gridCheck\">\n          Request Admin Privileges\n        </label>\n      </div>\n    </div>\n\n    <br>\n    <button [disabled]=\"!f.valid\" class=\"btn btn-primary\">Sign up\n    </button>\n  </div>\n</form>"
+module.exports = "<a routerLink=\"/\">&#8592;To Login Page</a>\n<form #f=\"ngForm\" (ngSubmit)=\"signup(f.value)\">\n  <div *ngIf=\"errorDetails\" class=\"alert alert-danger\">\n    {{errorDetails}}\n  </div>\n  <div class=\"container col-md-6 form-group\">\n    <div class=\"row\">\n      <div class=\"col\">\n        <label for=\"username\">Username</label>\n        <br>\n        <input placeholder=\"*Username\" id=\"username\" #username=\"ngModel\" ngModel name=\"username\" required maxlength=\"40\" minlength=\"3\"\n          class=\"form-control\">\n        <div class=\"alert alert-danger\" *ngIf=\"username.touched && username.invalid\">\n          <div *ngIf=\"username.errors.required\">\n            This field is required.\n          </div>\n          <div *ngIf=\"username.errors.minlength\">\n            Username must be atleast 3 characters.\n          </div>\n          <div *ngIf=\"username.errors.maxlength\">\n            Username cannot exceed 40 characters.\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col\">\n        <label for=\"email\">Email</label>\n        <br>\n        <input placeholder=\"*Email\" id=\"email\" #email=\"ngModel\" ngModel name=\"email\" required minlength=\"5\" maxlength=\"35\" class=\"form-control\">\n        <div class=\"alert alert-danger\" *ngIf=\"email.touched && email.invalid\">\n          <div *ngIf=\"email.errors.required\">\n            This field is required.\n          </div>\n          <div *ngIf=\"email.errors.minlength\">\n            Email must be atleast 5 characters.\n          </div>\n          <div *ngIf=\"email.errors.maxlength\">\n            Email cannot exceed 35 characters.\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col\">\n        <label for=\"password\">Password </label>\n        <br>\n        <input type=\"password\" id=\"password\" placeholder=\"*Password\" ngModel name=\"password\" #password=\"ngModel\" required minlength=\"5\"\n          maxlength=\"20\" class=\"form-control\">\n        <div class=\"alert alert-danger\" *ngIf=\"password.touched && password.invalid\">\n          <div *ngIf=\"password.errors.required\">\n            This field is required.\n          </div>\n          <div *ngIf=\"password.errors.minlength\">\n            Password must be atleast 5 characters.\n          </div>\n          <div *ngIf=\"password.errors.maxlength\">\n            Password cannot exceed 20 characters.\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"form-group\">\n      <div class=\"form-check\">\n        <input class=\"form-check-input\" type=\"checkbox\" ngModel name=\"isAdmin\" #isAdmin=\"ngModel\" id=\"gridCheck\">\n        <label class=\"form-check-label\" for=\"gridCheck\">\n          Request Admin Privileges\n        </label>\n      </div>\n    </div>\n\n    <br>\n    <button [disabled]=\"!f.valid\" class=\"btn btn-primary\">Sign up\n    </button>\n  </div>\n</form>"
 
 /***/ }),
 
@@ -1522,13 +1522,14 @@ var SignupComponent = /** @class */ (function () {
     }
     SignupComponent.prototype.signup = function (signupDetails) {
         var _this = this;
+        this.errorDetails = null;
         if (!signupDetails.isAdmin)
             signupDetails.isAdmin = false;
         this.authService.signup(signupDetails).subscribe(function (result) {
             if (result)
                 _this.router.navigate(['/movies']);
-            else
-                _this.invalidSignup = true;
+        }, function (error) {
+            _this.errorDetails = error.error;
         });
     };
     SignupComponent.prototype.ngOnInit = function () {
@@ -1566,7 +1567,7 @@ module.exports = "/**\r\nimg{\r\n    height: 100%;\r\n    width: 50%\r\n}\r\n*/\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"movie\">\n  <a routerLink=\"/movies\">&#8592;Movie List</a>\n  <div [ngStyle]=\"\n  {'background-image': backdropPath,\n   'background-repeat': 'no-repeat'}\" class=\"jumbotron\">\n\n    <h1 class=\"center\">\n      {{movie.title}}\n      <small>({{movie.release_date | date}})</small>\n    </h1>\n    <div class=\"center\">\n      <img [src]=\"posterUrl+movie.poster_path\" class=\"img-thumbnail\" [alt]=\"movie.title\">\n    </div>\n  </div>\n  <p>\n    Average Score: {{movie.vote_average}}\n  </p>\n  <p>\n    Voters: {{movie.vote_count}}\n  </p>\n  <movie-cast [id]=\"id\"></movie-cast>\n  <ul class=\"list-inline\">\n    <p>\n      <br>\n      <b>\n        Genres:\n      </b>\n    </p>\n    <li *ngFor=\"let g of movie.genres; last as l\" class=\"list-inline-item\">\n      <div class=\"label label-warning\">\n        {{g.name}}\n        <span *ngIf=\"!l\">,</span>\n      </div>\n    </li>\n  </ul>\n  <b>Synopsis</b>\n  <br> {{movie.overview}}\n\n</div>"
+module.exports = "<div *ngIf=\"movie\">\n  <a routerLink=\"/movies\">&#8592;Movie List</a>\n  <div [ngStyle]=\"\n  {'background-image': backdropPath,\n   'background-repeat': 'no-repeat'}\" class=\"jumbotron img-responsive\">\n\n    <h1 class=\"center\">\n      {{movie.title}}\n      <small>({{movie.release_date | date}})</small>\n    </h1>\n    <div class=\"center\">\n      <img [src]=\"posterUrl+movie.poster_path\" class=\"img-thumbnail img-responsive\" [alt]=\"movie.title\">\n    </div>\n  </div>\n  <p>\n    Average Score: {{movie.vote_average}}\n  </p>\n  <p>\n    Voters: {{movie.vote_count}}\n  </p>\n  <movie-cast [id]=\"id\"></movie-cast>\n  <ul class=\"list-inline\">\n    <p>\n      <br>\n      <b>\n        Genres:\n      </b>\n    </p>\n    <li *ngFor=\"let g of movie.genres; last as l\" class=\"list-inline-item\">\n      <div class=\"label label-warning\">\n        {{g.name}}\n        <span *ngIf=\"!l\">,</span>\n      </div>\n    </li>\n  </ul>\n  <b>Synopsis</b>\n  <br> {{movie.overview}}\n\n</div>"
 
 /***/ }),
 
