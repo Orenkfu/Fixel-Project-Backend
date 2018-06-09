@@ -1215,7 +1215,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var AuthService = /** @class */ (function () {
     function AuthService(http) {
         this.http = http;
-        this.url = "http://localhost:3000/api/auth";
+        this.url = "/api/auth";
         this.jwtHelper = new _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_3__["JwtHelperService"]();
     }
     AuthService.prototype.appendAuthHeader = function () {
@@ -1327,7 +1327,7 @@ var MoviesService = /** @class */ (function () {
     function MoviesService(http, authService) {
         this.http = http;
         this.authService = authService;
-        this.url = 'http://localhost:3000/api/movies';
+        this.url = '/api/movies';
     }
     MoviesService.prototype.getMovies = function () {
         var authHeader = this.authService.appendAuthHeader();
