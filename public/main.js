@@ -429,7 +429,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<header></header>\n<button *ngIf=\"isLoggedIn()\" (click)=\"logout()\" class=\"btn btn-secondary float-right\">Log Out</button>\n<div class=\"container\">\n\n  <router-outlet>\n  </router-outlet>\n</div>"
+module.exports = "<header (click)=\"logout()\">\n\n</header>\n<div class=\"container\">\n\n  <router-outlet>\n  </router-outlet>\n</div>"
 
 /***/ }),
 
@@ -464,9 +464,6 @@ var AppComponent = /** @class */ (function () {
         this.router = router;
     }
     //isLoggedIn: boolean;
-    AppComponent.prototype.isLoggedIn = function () {
-        return this.authService.isLoggedIn();
-    };
     AppComponent.prototype.isAdmin = function () {
         return this.authService.isUserAdmin();
     };
@@ -695,7 +692,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron jumbotron-fluid\">\n  <!--\n  <img src=\"../assets/logo-300x80-png\" alt=\"sdsd\">\n-->\n  <div class=\"container\">\n    <div class=\"display-4\"></div>\n    <h1>Fixel's NodeJS/Angular Movie Ticket Shop</h1>\n    <p class=\"lead\">This application was built using Node, MongoDB, ExpressJS, Angular, Bootstrap, and more!</p>\n  </div>\n</div>"
+module.exports = "<div class=\"jumbotron jumbotron-fluid\">\n\n  <div class=\"container\">\n    <button *ngIf=\"isLoggedIn()\" (click)=\"logout()\" class=\"btn btn-secondary  float-lg-right\">Log Out</button>\n    <div class=\"display-4\"></div>\n    <h1>Fixel's NodeJS/Angular Movie Ticket Shop</h1>\n    <p class=\"lead\">This application was built using Node, MongoDB, ExpressJS, Angular, Bootstrap, and more!</p>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -709,7 +706,8 @@ module.exports = "<div class=\"jumbotron jumbotron-fluid\">\n  <!--\n  <img src=
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HeaderComponent", function() { return HeaderComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -720,18 +718,28 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var HeaderComponent = /** @class */ (function () {
-    function HeaderComponent() {
+    function HeaderComponent(authService) {
+        this.authService = authService;
+        this.click = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
     }
+    HeaderComponent.prototype.logout = function () {
+        this.click.emit();
+    };
+    HeaderComponent.prototype.isLoggedIn = function () {
+        return this.authService.isLoggedIn();
+    };
     HeaderComponent.prototype.ngOnInit = function () {
     };
     HeaderComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'header',
             template: __webpack_require__(/*! ./header.component.html */ "./src/app/header/header.component.html"),
             styles: [__webpack_require__(/*! ./header.component.css */ "./src/app/header/header.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [_services_auth_service__WEBPACK_IMPORTED_MODULE_0__["AuthService"]])
     ], HeaderComponent);
     return HeaderComponent;
 }());
@@ -1215,7 +1223,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var AuthService = /** @class */ (function () {
     function AuthService(http) {
         this.http = http;
-        this.url = "/api/auth";
+        this.url = "http://localhost:3000/api/auth";
         this.jwtHelper = new _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_3__["JwtHelperService"]();
     }
     AuthService.prototype.appendAuthHeader = function () {
@@ -1327,7 +1335,7 @@ var MoviesService = /** @class */ (function () {
     function MoviesService(http, authService) {
         this.http = http;
         this.authService = authService;
-        this.url = '/api/movies';
+        this.url = 'http://localhost:3000/api/movies';
     }
     MoviesService.prototype.getMovies = function () {
         var authHeader = this.authService.appendAuthHeader();
@@ -1383,7 +1391,7 @@ var OrdersService = /** @class */ (function () {
     function OrdersService(authService, http) {
         this.authService = authService;
         this.http = http;
-        this.url = '/api/orders';
+        this.url = 'http://localhost:3000/api/orders';
     }
     OrdersService.prototype.purchaseTicket = function (order) {
         return this.http.post(this.url, order, { headers: this.authService.appendAuthHeader() });
