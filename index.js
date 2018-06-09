@@ -1,10 +1,20 @@
 const express = require('express');
-const _ = require('underscore');
-const app = express();
-let x = [1, 2, 3, 4, 5, 6, 7, 8];
-console.log(_.contains(x, 2));
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
 
-app.listen(3000, () => console.log('INITIATED -- Listening on port 3000'))
+const client = require('./api_client/tmdbclient');
+const winston = require('winston');
+const app = express();
+const db = require('./startup/db_connect.js').init();
+require('./startup/logging')();
+require('./startup/routes')(app);
+require('./startup/config')();
+require('./startup/validation')();
+require('./startup/prod')(app);
+//client.populateMovies()
+app.use(express.static('public'))
+
+//PORT
+const port = process.env.PORT || 3000;
+app.listen(port, () => winston.info(`SERVER INITIATED: Listening on port ${port}`))
+
+
+
