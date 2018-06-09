@@ -12,7 +12,10 @@ const dblogger = new (winston.Logger)({
     ]
 })
 module.exports.log = function (req, res, next) {
-    dblogger.info('Logger of all REST calls', [{ path: req.path }, { method: req.method }])
+    //seems to me like logging GET and OPTIONS into a database is a bad idea, although I might be mistaken..
+    if (!req.method == 'GET' || !req.method == 'OPTIONS') {
+        dblogger.info('Log of all API calls', [{ path: req.path }, { method: req.method }, { remote_address: req.ip }])
+    }
     next();
 }
 

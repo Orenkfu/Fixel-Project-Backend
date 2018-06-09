@@ -27,7 +27,7 @@ router.post('/', [auth, admin], async (req, res) => {
     const newMovie = await movieDao.saveMovie(movie);
     res.send(newMovie);
 });
-//delete movie..
+
 router.delete('/:id', [auth, admin], async (req, res) => {
 
     const movie = await movieDao.deleteMovie(req.params.id);
@@ -37,9 +37,10 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 
 });
 
-//get all movies by descending release date
 router.get('/', [auth], async (req, res) => {
-    const movies = await Movie.find().sort({ 'release_date': -1 });
+    //delegates to movieDao to sort queries or return default sorting order (by release date, descending order)
+    const movies = await movieDao.getMoviesByProperty(req.query.sortBy);
+
     res.send(movies);
 });
 

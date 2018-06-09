@@ -2,36 +2,24 @@ const mongoose = require('mongoose');
 const { Movie, validate } = require('../models/movie')
 
 async function getMovies() {
-    try {
+    return await Movie.find().sort('release_date');
 
-        return await Movie.find().sort('release_date');
-
-    } catch (error) {
-        console.log(error)
-    }
 }
 
 async function deleteMovie(id) {
-    try {
-        console.log(id);
-        const movie = await Movie.findById(id);
-        console.log(movie);
-        if (!movie) return null;
-        const result = await Movie.deleteOne({ _id: movie.id })
-        console.log(result);
-        if (result.ok = 1) return movie;
-        else return null;
-    } catch (ex) {
-        return ex.message;
-    }
+
+    //first, find the movie by id
+    const movie = await Movie.findById(id);
+
+    if (!movie) return null;
+    const result = await Movie.deleteOne({ _id: movie.id })
+    //if a movie was deleted, return the deleted movie 
+    if (result.ok == 1) return movie;
+    else return null;
+
 }
 async function getMovie(id) {
-    try {
-
-        return await Movie.findById(id);
-    } catch (error) {
-        console.log(error)
-    }
+    return await Movie.findById(id);
 }
 async function saveMovie(movie) {
     const newMovie = new Movie({
@@ -44,6 +32,23 @@ async function saveMovie(movie) {
 
     return await newMovie.save();
 }
+
+//Couldnt get this to work *properly* in time.. a couple more days for a proper sorting and filtering system
+//oh well!
+async function getMoviesByProperty(sortAttribute) {
+    switch (sortAttribute) {
+        case 'title':
+            return await Movie.find().sort({ title: 1 });
+            break;
+        case 'release_date':
+            return await Movie.find().sort({ release_date: 1 });
+        case '_id':
+            return await Movie.find().sort({ _id: 1 });
+        default:
+            return await Movie.find().sort({ release_date: -1 });
+    }
+}
+module.exports.getMoviesByProperty = getMoviesByProperty;
 module.exports.saveMovie = saveMovie;
 module.exports.getMovies = getMovies;
 module.exports.getMovie = getMovie;

@@ -16,19 +16,14 @@ async function createUser(receivedUser) {
     await user.save();
     return user;
 }
+
 async function login(loginDetails) {
-    try {
+    let user = await User.findOne({ email: loginDetails.email });
+    //opposite of signup: if user doesnt exist, details are invalid.
+    if (!user) return false;
 
-        let user = await User.findOne({ email: loginDetails.email });
-        //opposite of signup: if user doesnt exist, details are invalid.
-        if (!user) return false;
-
-        const validLogin = await bcrypt.compare(loginDetails.password, user.password);
-        return validLogin ? user : null;
-    }
-    catch (ex) {
-        console.log(ex.message);
-    }
+    const validLogin = await bcrypt.compare(loginDetails.password, user.password);
+    return validLogin ? user : null;
 }
 
 async function getById(id) {

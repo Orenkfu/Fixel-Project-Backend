@@ -10,12 +10,10 @@ const auth = require('../middleware/auth');
 router.post('/new', async (req, res) => {
     let receivedUser = req.body;
     //Joi Validate - user model
-    console.log(receivedUser);
+
     const { error } = validate(receivedUser);
-    console.log(error)
     if (error) return res.status(400).send(error.details[0].message);
-    //TODO: replace direct db access with dao delegation
-    //before attempt to persist, checks db email
+    //before attempt to persist, checks db email for uniqueness
     let user = await User.findOne({ email: receivedUser.email });
     if (user) return res.status(400).send('Invalid email or password.');
 
