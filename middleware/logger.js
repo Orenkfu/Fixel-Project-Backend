@@ -1,11 +1,12 @@
 const winston = require('winston');
+const config = require('config');
 require('winston-mongodb');
 
 const dblogger = new (winston.Logger)({
     level: "info",
     transports: [
         new winston.transports.MongoDB({
-            db: 'mongodb://localhost:27017/fixel-demo',
+            db: config.get('db'),
             collection: 'logs',
             storeHost: true
         })
