@@ -16,9 +16,9 @@ A small web app for purchasing movie tickets, connecting to TMDB API remotely an
 
 * An admin user can search directly in TMDB and add any movies to local store, as well as delete existing movies.
 
-*A fake purchase button which adds an Order document to local database, no payment system.
+* A fake purchase button which adds an Order document to local database, no payment system.
 
-*Ability to click on any movie existing in local DB to get more details about it straight from TMDB API.
+* Ability to click on any movie existing in local DB to get more details about it straight from TMDB API.
 
 ## Deploy
 
