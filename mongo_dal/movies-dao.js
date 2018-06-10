@@ -41,9 +41,9 @@ async function getMoviesByProperty(sortAttribute) {
             return await Movie.find().sort({ title: 1 });
             break;
         case 'release_date':
-            return await Movie.find().sort({ release_date: 1 });
+            return await Movie.find().sort({ release_date: -1 });
         case '_id':
-            return await Movie.find().sort({ _id: 1 });
+            return await Movie.find().sort({ _id: -1 });
         default:
             return await Movie.find().sort({ release_date: -1 });
     }

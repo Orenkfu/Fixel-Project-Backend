@@ -1,6 +1,8 @@
 const winston = require('winston');
 require('winston-mongodb');
 require('express-async-errors');
+const config = require('config');
+const mongoMorgan = require('mongo-morgan');
 
 module.exports = function () {
     winston.handleExceptions(
@@ -13,9 +15,5 @@ module.exports = function () {
         throw ex;
     })
     winston.add(winston.transports.File, { filename: 'logfile.log' })
-    //not working
-    //winston.add(winston.transports.mongoDB, { db: 'mongodb://localhost/fixel-demo' }
-    //, { collection: 'logs' },
-    //    { storeHost: true }
-    //);
+
 }
